@@ -5,7 +5,14 @@
     "scheme": "leakagesource",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "meta": {
+        "viewport": "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+      }
+    },
     "newArchEnabled": true,
     "plugins": [
       "expo-router"
