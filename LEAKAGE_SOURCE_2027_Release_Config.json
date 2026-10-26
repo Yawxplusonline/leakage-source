@@ -1,0 +1,48 @@
+{
+  "app_name": "LEAKAGE SOURCE",
+  "initial_active_year": 2027,
+  "student_visible_years": [
+    2027
+  ],
+  "future_years": {
+    "2028": {
+      "status": "hidden",
+      "release_requires_admin_approval": true
+    },
+    "2029": {
+      "status": "hidden",
+      "release_requires_admin_approval": true
+    },
+    "2030": {
+      "status": "hidden",
+      "release_requires_admin_approval": true
+    }
+  },
+  "rollover_policy": {
+    "default_mode": "admin_approved",
+    "archive_previous_year": true,
+    "permanently_delete_previous_questions": false,
+    "preserve_student_accounts": true,
+    "preserve_attempt_history": true,
+    "invalidate_active_year_cache": true,
+    "require_backup_before_rollover": true,
+    "require_content_completeness_check": true,
+    "require_reviewer_approval": true,
+    "audit_log_required": true,
+    "rollback_supported": true
+  },
+  "question_target": {
+    "questions_per_subject_per_applicable_track": 100,
+    "item_type": "multiple_choice",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "require_explanation": true,
+    "require_syllabus_mapping": true,
+    "require_review_before_publish": true
+  },
+  "content_disclaimer": "Original syllabus-based practice material. Not leaked, official, predicted, or guaranteed examination questions."
+}
