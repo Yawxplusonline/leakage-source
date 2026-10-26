@@ -1,13 +1,25 @@
 import { Stack } from 'expo-router';
-import { View, StyleSheet, Platform } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { View, StyleSheet, Platform, useWindowDimensions } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../theme/colors';
 
 export default function RootLayout() {
+  const { width } = useWindowDimensions();
+
+  // On mobile screens (width < 640), occupy 100% full screen fluid width.
+  // On tablets or desktop monitors, center the app with a modern card framing.
+  const isMobile = width < 640;
+
   return (
     <SafeAreaProvider>
       <View style={styles.outerContainer}>
-        <View style={styles.responsiveWrapper}>
+        <SafeAreaView
+          style={[
+            styles.responsiveWrapper,
+            isMobile ? styles.mobileFullWidth : styles.desktopCentered
+          ]}
+          edges={['top', 'bottom', 'left', 'right']}
+        >
           <Stack
             screenOptions={{
               headerStyle: { backgroundColor: COLORS.bg },
@@ -22,7 +34,7 @@ export default function RootLayout() {
             <Stack.Screen name="student/index" options={{ title: 'Student Practice Portal', headerShown: false }} />
             <Stack.Screen name="history/index" options={{ title: 'My Learning History', headerShown: false }} />
           </Stack>
-        </View>
+        </SafeAreaView>
       </View>
     </SafeAreaProvider>
   );
@@ -31,22 +43,33 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
-    backgroundColor: '#05070D', // Deep backdrop for larger desktop screens
+    backgroundColor: '#05070D',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    height: '100%',
   },
   responsiveWrapper: {
     flex: 1,
-    width: '100%',
-    maxWidth: 600, // Optimal mobile phone & tablet view width
+    height: '100%',
     backgroundColor: COLORS.bg,
+  },
+  mobileFullWidth: {
+    width: '100%',
+    maxWidth: '100%',
+  },
+  desktopCentered: {
+    width: '100%',
+    maxWidth: 580,
     ...Platform.select({
       web: {
         shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.35,
-        shadowRadius: 16,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.45,
+        shadowRadius: 20,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderColor: COLORS.surfaceBorder,
       }
     })
   }
