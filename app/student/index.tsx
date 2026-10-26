@@ -117,16 +117,12 @@ export default function StudentPortalScreen() {
         </View>
       </LinearGradient>
 
-      {/* Exam Selector */}
+      {/* Exam Selector Grid - All visible at a glance on any mobile phone */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Select Examination</Text>
-        <Text style={styles.sectionSub}>Choose your track</Text>
+        <Text style={styles.sectionSub}>All tracks</Text>
       </View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 10, paddingBottom: 4 }}
-      >
+      <View style={styles.examGrid}>
         {examOptions.map(e => {
           const isActive = exam === e;
           return (
@@ -136,12 +132,12 @@ export default function StudentPortalScreen() {
                 setExam(e);
                 setProgramme('All subjects');
               }}
-              style={[styles.examChip, isActive && styles.examChipActive]}
+              style={[styles.examGridCard, isActive && styles.examGridCardActive]}
             >
               <Text
                 style={[
-                  styles.examChipText,
-                  isActive && styles.examChipTextActive
+                  styles.examGridCardText,
+                  isActive && styles.examGridCardTextActive
                 ]}
               >
                 {e}
@@ -149,7 +145,7 @@ export default function StudentPortalScreen() {
             </Pressable>
           );
         })}
-      </ScrollView>
+      </View>
 
       {/* Electives for WASSCE */}
       {exam !== 'BECE' && (
@@ -392,18 +388,43 @@ const styles = StyleSheet.create({
   sectionSub: { fontSize: 11, color: COLORS.textMuted },
   filterLabel: { fontSize: 10, fontWeight: '900', color: COLORS.textSecondary, letterSpacing: 1, marginTop: 4 },
 
-  // Chips
-  examChip: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+  // Exam 2x2 Grid for instant visibility on mobile
+  examGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginTop: 4
+  },
+  examGridCard: {
+    width: '48.5%',
+    paddingVertical: 14,
+    paddingHorizontal: 12,
     borderRadius: 14,
     backgroundColor: COLORS.surface,
-    borderWidth: 1,
-    borderColor: COLORS.surfaceBorder
+    borderWidth: 1.5,
+    borderColor: COLORS.surfaceBorder,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 52
   },
-  examChipActive: { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
-  examChipText: { fontSize: 13, fontWeight: '800', color: COLORS.textSecondary },
-  examChipTextActive: { color: COLORS.bg },
+  examGridCardActive: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8
+  },
+  examGridCardText: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: COLORS.textWhite,
+    textAlign: 'center'
+  },
+  examGridCardTextActive: {
+    color: COLORS.bg,
+    fontWeight: '900'
+  },
 
   progChip: {
     paddingVertical: 7,
