@@ -13,7 +13,7 @@ import { getSubjectById } from './catalog';
 const STORAGE_KEYS = {
   USER: '@leakage_source_user_v2',
   CONFIG: '@leakage_source_config_v2',
-  QUESTIONS: '@leakage_source_questions_v2',
+  QUESTIONS: '@leakage_source_questions_v4',
   ATTEMPTS: '@leakage_source_attempts_v2',
   AUDIT_LOGS: '@leakage_source_audit_logs_v2',
   BACKUPS: '@leakage_source_backups_v2'
@@ -57,6 +57,7 @@ const DEFAULT_USER: UserProfile = {
 
 // Expand questions to target if needed
 function expandToTargetQuestions(base: QuestionItem[], targetCount: number = 100): QuestionItem[] {
+  if (base.length >= targetCount) return base.slice(0, targetCount);
   const result: QuestionItem[] = [...base];
   if (base.length === 0) return result;
 
@@ -66,7 +67,7 @@ function expandToTargetQuestions(base: QuestionItem[], targetCount: number = 100
     result.push({
       ...template,
       id: `${template.id}-var-${counter++}`,
-      stem: `[Item ${result.length + 1}] ${template.stem}`,
+      stem: `${template.stem} (Review Part ${counter})`,
       version: 1,
       createdAt: new Date().toISOString()
     });

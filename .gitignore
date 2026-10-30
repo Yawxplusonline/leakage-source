@@ -13,3 +13,6 @@ yarn-error.log*
 *.orig.*
 web-build/
 .vercel
+__pycache__/
+*.pyc
+

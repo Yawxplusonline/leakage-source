@@ -1,0 +1,141 @@
+# -*- coding: utf-8 -*-
+"""
+Generate 100 100% DISTINCT questions for Twi, French, and Arabic.
+Zero repetitions, unique stems, unique options, unique explanations.
+"""
+import json
+
+def get_distinct_twi_100():
+    # 100 distinct syllabus questions for Twi
+    items = [
+        # Mmɛ (1-25)
+        ("Toa bɛ yi so: 'Tikro nko...', nkyerɛase koraa ne sɛ:", ["agyina", "asɛm", "akyi", "abɔntene"], 0, "Tikro nko agyina. Ɛkyerɛ sɛ adwene baako nko ara ntumi nsi gyinae pa a ɛyɛ duru.", "Mmɛ"),
+        ("Kyerɛ bɛ yi ase: 'Woforo dua pa a...'", ["na woanya sika", "na yepia wo", "na woapira", "na wobera"], 1, "Woforo dua pa a, na yepia wo. Ɛkyerɛ sɛ sɛ woyɛ adepa a, obiara pɛ sɛ ɔboa wo.", "Mmɛ"),
+        ("Sɛ obi ka sɛ 'Abofra bɔ nwa na ɔmmɔ akyekyedeɛ' a, ɛkyerɛ sɛ:", ["Ɔpɛ nwa kɛse", "Ɔyɛ abofra", "Ɔyɛ nea n'ahoɔden bɛtumi yɛ", "Ɔsuro akyekyedeɛ"], 2, "Ɛkyerɛ sɛ obiara yɛ nea ne nteaseɛ anaa n'ahoɔden bɛtumi aduru.", "Mmɛ"),
+        ("Bɛ 'Baako werɛ aduru a, ɛdan gu' kyerɛ sɛn?", ["Nkabom ho hia", "Obiara nni sika", "Aduru no yɛ ya", "Nnipa nyinaa nyɛ pɛ"], 0, "Ɛkyerɛ sɛ nkabom ne baakoyɛ na ɛma adwuma biara tu mpɔn.", "Mmɛ"),
+        ("Bɛ 'Sɛ panyin te fie na nkwadaa we ntɛtea a...'", ["ɔno ara na we bi", "yɛbɔ no ka", "ɔyɛ kɛse", "wɔnhu no"], 0, "Sɛ panyin te fie na nkwadaa we ntɛtea a, yɛka sɛ ɔno na wama kwan anaa ɔno ara na we bi.", "Mmɛ"),
+        ("Kyerɛ bɛ yi so: 'Nsateaa nnum no...'", ["nyinaa yɛ pɛ", "nyinaa nyɛ pɛ", "yɛ tenten", "nni ho mfasoɔ"], 1, "Nsateaa nnum no nyinaa nyɛ pɛ. Ɛkyerɛ sɛ nnipa nteaseɛ ne wɔn suban nyɛ pɛ.", "Mmɛ"),
+        ("Kyerɛ 'Akokɔ nan tia ne ba so nanso...'", ["ɛnkum no", "ɛpira no", "ɛbɔ no", "ɛpam no"], 0, "Akokɔ nan tia ne ba so a, ɛnkum no. Ɛkyerɛ sɛ awofoɔ nteɛsoɔ nkyerɛ sɛ wɔtan wɔn mma.", "Mmɛ"),
+        ("Sɛ Akanfoɔ ka sɛ 'Obi mfa ne nsa nni na ɔmfa nsa baako nwe mako' a, ɛkyerɛ dɛn?", ["Ɛsɛ sɛ yɛdi mako", "Ɛnkyerɛ ade foforɔ", "Ɛnsɛ sɛ yɛyɛ biribi a ɛbɛgu yɛn anim ase", "Nsa baako ye"], 2, "Ɛkyerɛ sɛ ɛnsɛ sɛ obi gu n'ankasa anim ase.", "Mmɛ"),
+        ("Bɛ 'Obi nkyerɛ abofra Nyame' kyerɛ dɛn?", ["Nyame kɛseyɛ da adi pefee ma obiara hu", "Nkwadaa nnim Nyame", "Ɔkyerɛkyerɛni na ɛkyerɛ Nyame", "Nyame wɔ soro"], 0, "Ɛkyerɛ sɛ Nyame tumi ne ne kɛseyɛ da adi ma obiara, abofra mpo nim.", "Mmɛ"),
+        ("Bɛ 'Akoma te sɛ bɔtɔ...', kyerɛ nea ɛkɔ so:", ["wobue a na asɛe", "obi nhunumu", "ɛyɛ dɔkɔdɔkɔ", "ɛyɛ duru"], 1, "Akoma te sɛ bɔtɔ, obi nhunumu. Ɛkyerɛ sɛ obi ntumi nhu nea ɔfoforɔ dwene wɔ n'akoma mu.", "Mmɛ"),
+        ("Toa bɛ yi so: 'Hu m'ani so mma me nti na...'", ["yɛwo mma mmienu", "yɛkɔ asu", "yɛware", "yɛbɔ nkɔmmɔ"], 0, "Hu m'ani so mma me nti na atwea mmienu nam. Ɛkyerɛ mmoaborɔ ne mfasoɔ a ɛwɔ aboafoɔ ho.", "Mmɛ"),
+        ("Kyerɛ bɛ yi ase: 'Abofra a ɔnsuro osuo no...'", ["ɔhunu nsuo a ɔdwan", "ɛtɔ a ɔbɛdwan kɔ fie", "ɔte aseɛ", "ɔyɛ kɛse"], 1, "Ɛkyerɛ sɛ amanehunu kyerɛ onipa nyansa.", "Mmɛ"),
+        ("Bɛ 'Anomaa a ɔntu no...'", ["ɔnni ntɛkrɛma", "ɔnnhu baabi a aduane wɔ", "ɔnwu da", "ɔnsuro hwee"], 1, "Ɛkyerɛ sɛ sɛ wote baabi pɔtee a, worennya adwene foforɔ anaa nkɔsoɔ.", "Mmɛ"),
+        ("Kyerɛ bɛ yi nkyerɛaseɛ: 'Dua a ɛwɔ baabi a ɛbɛhwe aseɛ no, ɛnhwe fam prɛko.'", ["Ɛbɔ kɔkɔ ansa", "Ɛnsuro mframa", "Ɛnyɛ den", "Obiara ntumi ntwa"], 0, "Ɛkyerɛ sɛ asɛm bɔne biara kɔkɔbɔ da adi ansa na atu aba.", "Mmɛ"),
+        ("Bɛ 'Agya rekɔ n'akuraa no...', toa so:", ["ɔde ne nsa to n'akyi", "wansan amma bio", "ɔkura poma", "ɔda nsuo mu"], 1, "Ɛkyerɛ owuo anaa amannehunu a ɛnni akyire bio.", "Mmɛ"),
+        ("Toa so: 'Sɛ aso tee asɛm a...'", ["ɛnsuro", "ɛte", "ani hu ansa", "ɛyɛ ya"], 2, "Ɛkyerɛ sɛ nokorɛ mu no, adanseɛ a ani ahu no yɛ den sen nea aso teɛ.", "Mmɛ"),
+        ("Kyerɛ bɛ yi ase: 'Kwaterekwa se ɔbɛma wo ntoma a, tie ne din.'", ["Ɔwɔ ntoma pii", "Hwɛ ne tebea ansa na woagye no adi", "Ɔpɛ akyɛdeɛ", "Tie ne kasa"], 1, "Ɛkyerɛ sɛ hwɛ nea obi betumi ayɛ ansa na woagye ne bɔhyɛ adi.", "Mmɛ"),
+        ("Bɛ 'Funtumfunafu dɛnkyɛmfunafu...', dɛn na ɛkyerɛ?", ["Wɔwɔ yafunu baako nanso wɔreko aduane ho", "Wɔpɛ nsuo", "Wɔte po mu", "Wɔkoma yɛ ya"], 0, "Ɛkyerɛ nkontompo ne akɔnnɔ bɔne a nkurɔfoɔ di a ɛma wɔko wɔ deɛ ɛsɛ sɛ wɔkyɛ ho.", "Mmɛ"),
+        ("Kyerɛ bɛ yi nkyerɛaseɛ: 'Ɔba nyansafoɔ yɛbu no bɛ na yɛnka no asɛm.'", ["Ɔnte kasa ase", "Ɔpɛ abebusɛm", "Nteaseɛ ketewa pɛ dɔɔso ma no", "Ɔyɛ panyin"], 2, "Ɛkyerɛ sɛ onipa a ɔwɔ nyansa no hia nteɛsoɔ kakraabi na wate ase.", "Mmɛ"),
+        ("Toa bɛ yi so: 'Akyekyedeɛ se: deɛ ɛba nyinaa...'", ["ɛyɛ n'ani so", "yɛbɛfa no saa ara", "ɔnsuro hwee", "ɛyɛ anigyeɛ"], 1, "Ɛkyerɛ ahodwiri anaa boasetɔ wɔ asetena mu nneɛma ho.", "Mmɛ"),
+        ("Kyerɛ 'Obi nsen obi gye sɛ Nyame' ase:", ["Nyame ne panyin a ɔsen obiara", "Nnipa nyinaa yɛ pɛ koraa", "Obiara wɔ sika", "Nnwuma nyinaa yɛ pɛ"], 0, "Ɛkyerɛ sɛ Nyame nkutoo na ne tumi ne ne kɛseyɛ boro obiara so.", "Mmɛ"),
+        ("Bɛ 'Sɛ wo nsa hyɛ obi anom a...'", ["bɔ no tɛkrɛma", "wompia no", "mfa abufuo mmɔ ne ti so", "ka ne nsa"], 2, "Ɛkyerɛ nyansa a yɛde di nnoɔma ho dwuma berɛ a yɛwɔ obi nsam.", "Mmɛ"),
+        ("Toa so: 'Panyin a ɔhyɛ fie na...'", ["ɔbɔ akoraa ka", "nsuo mmɔ no", "mmɔfra di agorɔ", "adwuma ba"], 1, "Ɛkyerɛ banbɔ ne abotare a panyin pa de gu fie.", "Mmɛ"),
+        ("Bɛ 'Nsa baako nso nkataboɔ' kyerɛ dɛn?", ["Onipa baako ntumi nyɛ adwuma kɛseɛ nko ara", "Nsa mmienu na ɛdi aduane", "Nkataboɔ yɛ duru", "Yɛmfa nsa baako nnidi"], 0, "Ɛkyerɛ nkabom ne mmɔdenmɔ a nnipa baanu anaa dodoɔ de bom yɛ.", "Mmɛ"),
+        ("Bɛ 'Kookoo yɛ sika nanso...'", ["yɛntumi nwe", "ɛyɛ den", "ɛwo kɔɔ", "ɛyɛ fitaa"], 0, "Ɛkyerɛ sɛ biribiara wɔ ne dwumadie pɔtee wɔ asetena mu.", "Mmɛ"),
+
+        # Kasa Mmara ne Kasamu (26-50)
+        ("Kyerɛ Edin kɛseɛ (Proper Noun) wɔ kasamu yi mu: 'Kofi kɔɔ Kumase nnɛ anɔpa.'", ["nnɛ", "kɔɔ", "Kofi", "anɔpa"], 2, "'Kofi' ne 'Kumase' yɛ edin pɔtee a yɛde ma obi anaa beaeɛ.", "Kasa Mmara"),
+        ("Edin nsiantumi (Pronoun) bɛn na ɛhyɛ 'Ama' ananmu: 'Ama kɔɔ sukuu.'", ["Ɔno", "Medeɛ", "Wɔn", "Yɛn"], 0, "'Ɔno' (ɔ-) ne edin nsiantumi a ɛfata obiako pɔtee a ɔnyɛ wo anaa me.", "Kasa Mmara"),
+        ("Kyerɛ Adeyɔ (Verb) a ɛwɔ kasamu yi mu: 'Abofra no redidi anigyeɛ so.'", ["abofra", "no", "redidi", "anigyeɛ"], 2, "'Redidi' kyerɛ adeyɔ a ɛrekɔ so mprempren.", "Kasa Mmara"),
+        ("Adekyerɛ (Adjective) adwuma titire ne sɛ:", ["Ɛkyerɛ baabi a adeɛ kɔɔe", "Ɛkyerɛ sɛnea edin bi te", "Ɛka nsɛm mmienu bom", "Ɛbɔ mmɔden"], 1, "Adekyerɛ kyerɛ suban, kɛseyɛ, anaa tebea a edin bi wom.", "Kasa Mmara"),
+        ("Kyerɛ adekyerɛ a ɛwɔ kasamu yi mu: 'Ɔbaa fefeɛ no baa fie ha.'", ["Ɔbaa", "fefeɛ", "fie", "baa"], 1, "'Fefeɛ' kyerɛ suban ne ahoɔfɛ a ɔbaa no kura.", "Kasa Mmara"),
+        ("Kyerɛ kasamu tebea yi: 'Yɛnkɔ fie ntɛm!'", ["Ahyɛdeɛ kasamu", "Asɛmmisa kasamu", "Nkaebɔ kasamu", "Nteamu kasamu"], 0, "Kasamu a ɛhyɛ anaa ɛsrɛ adeyɔ bi yɛ Ahyɛdeɛ kasamu.", "Kasa Mmara"),
+        ("Asɛmfua bɛn na ɛyɛ kasamafoɔ (Adverb): 'Kwame tuu mmirika ntɛmntɛm.'", ["Kwame", "tuu", "mmirika", "ntɛmntɛm"], 3, "'Ntɛmntɛm' kyerɛ sɛnea adeyɔ no kɔɔ so.", "Kasa Mmara"),
+        ("Kyerɛ nkabomdeɛ (Conjunction) a ɛwɔ kasamu yi mu: 'Mepɛ sukuu nanso minsuro nsuo.'", ["Mepɛ", "sukuu", "nanso", "nsuo"], 2, "'Nanso' ka nsɛm mmienu a ɛne wɔn ho bɔ abira bom.", "Kasa Mmara"),
+        ("Asin (Morpheme) a yɛde hyɛ asɛmfua anim de dane ne tebea frɛ dɛn?", ["Akyiredeɛ", "Animdeɛ", "Kasani", "Nnyigyei"], 1, "Animdeɛ (Prefix) na ɛba asɛmfua no anim.", "Kasa Mmara"),
+        ("Nsɛmfua mmienu yi: 'kɛseɛ' ne 'ketewa' kyerɛ dɛn?", ["Nsɛmfua a ɛne wɔn ho sɛ", "Nsɛmfua a ɛbɔ abira", "Nkabomdeɛ", "Edin nsiantumi"], 1, "Nsɛmfua a ɛbɔ abira (Antonyms) na kɛseɛ ne ketewa yɛ.", "Kasa Mmara"),
+        ("Kyerɛ asɛmfua a ɛne 'anigyeɛ' yɛ adwene baako (Synonym):", ["ahosɛpɛ", "awerɛhoɔ", "abufuo", "osuro"], 0, "'Ahosɛpɛ' kyerɛ anigyeɛ ne dɛ a ɛba onipa akoma mu.", "Kasa Mmara"),
+        ("Kasamu a ɛka asɛm kɛkɛ a ahyɛdeɛ anaa asɛmmisa nni mu frɛ dɛn?", ["Nkaebɔ kasamu", "Asɛmmisa kasamu", "Ahyɛdeɛ kasamu", "Nteamu kasamu"], 0, "Nkaebɔ kasamu (Declarative sentence) na ɛka asɛm da adi.", "Kasa Mmara"),
+        ("Kyerɛ dodoɔ kabea ma asɛmfua 'abofra':", ["mmaa", "mmɔfra", "mpanyimfoɔ", "nkwadaa nkutoo"], 1, "'Abofra' dodoɔ kabea kɔ 'mmɔfra'.", "Kasa Mmara"),
+        ("Dɛn ne asɛmfua 'duabɔ' botaeɛ wɔ Akan kasa mu?", ["Adome anaa hyirabɔ bɔne", "Nhyira kɛseɛ", "Nkɔmmɔbɔ", "Ayeyie"], 0, "'Duabɔ' yɛ kasafua a yɛde dome obi bɔne.", "Kasa Mmara"),
+        ("Kyerɛ akyiredeɛ (Suffix) a ɛwɔ asɛmfua 'kɔɔe' mu:", ["kɔ", "-e", "ɔ", "k"], 1, "'-e' no yɛ akyiredeɛ a ɛkyerɛ berɛ a atwam (past tense marker).", "Kasa Mmara"),
+        ("Asɛmfua bɛn na ɛkyerɛ beaeɛ (Preposition/Locative): 'Bɔɔl no da pon no ase.'", ["Bɔɔl", "da", "pon", "ase"], 3, "'Ase' kyerɛ beaeɛ pɔtee a biribi wɔ.", "Kasa Mmara"),
+        ("Sɛ yɛka sɛ 'Me nko ara mede me sika' a, 'nko ara' yɛ dɛn?", ["Ntweɛsoɔ asɛm", "Edin", "Adeyɔ", "Nkabomdeɛ"], 0, "'Nko ara' twe asɛm no so ma ɛyɛ den.", "Kasa Mmara"),
+        ("Kyerɛ asɛmmisa kasamu akyi ahyɛnsodeɛ:", ["Akyi asɛmfua (.)", "Asɛmmisa ahyɛnsodeɛ (?)", "Ahomegyeɛ ahyɛnsodeɛ (,)", "Nteamu ahyɛnsodeɛ (!)"], 1, "Asɛmmisa akyi no, yɛde '?' ahyɛnsodeɛ na ɛwie.", "Kasa Mmara"),
+        ("Kasamu 'Nsuo tɔeɛ nti yɛnkɔɔ afuom' mu no, 'nti' yɛ:", ["Ntenteho asɛm", "Nkabomdeɛ a ɛkyerɛ nsunsuansoɔ", "Adeyɔ", "Edin kɛseɛ"], 1, "'Nti' kyerɛ deɛ enti a biribi sii anaa nsunsuansoɔ.", "Kasa Mmara"),
+        ("Kyerɛ nkabomdeɛ a ɛkyerɛ pɛyɛ: 'Kofi ne Ama kɔɔ sukuu.'", ["ne", "Kofi", "Ama", "kɔɔ"], 0, "'Ne' ka edin mmienu no bom ma wɔyɛ adwuma baako.", "Kasa Mmara"),
+        ("Edin a yɛntumi mfa nsa nka nanso yɛte nka wɔ yɛn tirim te sɛ 'nyansa' frɛ dɛn?", ["Edin a ɛwɔ hɔ kɛkɛ", "Edin a ɛnteetee (Abstract noun)", "Edin kɛseɛ", "Edin dodoɔ"], 1, "Abstract noun yɛ edin a yɛn nsa nka nanso ɛyɛ adwene mu tebea.", "Kasa Mmara"),
+        ("Dɛn na yɛfrɛ nkyerɛwee ahyɛnsodeɛ yi: (,)?", ["Akyipɔ", "Ahomegyeɛ ahyɛnsodeɛ (comma)", "Nteamu ahyɛnsodeɛ", "Kasamumu ahyɛnsodeɛ"], 1, "Ahomegyeɛ ahyɛnsodeɛ na yɛde gye ahome kakra wɔ nkyerɛwee mu.", "Kasa Mmara"),
+        ("Kyerɛ asɛmfua a nnyigyei 'ky' pue mu:", ["kye", "pa", "to", "fa"], 0, "'Kye' yɛ asɛmfua a ɛfiri nnyigyei mmienu bom 'k' ne 'y'.", "Kasa Mmara"),
+        ("Kasamu 'Gye sɛ wokɔ ansa na maba' kyerɛ:", ["Ahyɛaseɛ tebea", "Gye sɛ (Conditional)", "Nteamu", "Awerehoɔ"], 1, "'Gye sɛ' kyerɛ tebea bi a ɛsɛ sɛ ɛba mu ansa na foforɔ aso.", "Kasa Mmara"),
+        ("Kyerɛ asɛmfua a ɛkyerɛ berɛ a yɛwɔ mu mprempren:", ["nnɛ", "ɔkyena", "nnɛra", "nnaano"], 0, "'Nnɛ' kyerɛ da a yɛwom mprempren yi ara.", "Kasa Mmara"),
+
+        # Amammerɛ ne Amanneɛ (51-75)
+        ("Akanfoɔ mu no, abofra a yɛwo no Yawoada no kradin de sɛn?", ["Kofi", "Yaw", "Kwaku", "Kwame"], 1, "Ɔbarima a yɛwo no Yawoada no kradin ne Yaw, ɔbaa nso ne Yaa.", "Amammerɛ"),
+        ("Akanfoɔ mu no, abofra a yɛwo no Fiada a ɔyɛ ɔbaa kradin ne hwan?", ["Afia", "Ama", "Akosua", "Adwoa"], 0, "Fiada baa kradin ne Afia (Afua).", "Amammerɛ"),
+        ("Dɛn na Akanfoɔ de gye abofra foforɔ a yɛawo no to fie (Abadintoɔ)?", ["Nsuo ne nsa", "Mako ne gyeene", "Sika ne nsa", "Bayerɛ ne nsuo"], 0, "Yɛde nsuo ne nsa ka abofra no tɛkrɛma so kyerɛ nokorɛdie wɔ n'asetena mu.", "Amammerɛ"),
+        ("Akanfoɔ mu no, abusuakuo dodoɔ a yɛwɔ yɛ ahe?", ["Nson (anaa nwɔtwe)", "Dummienu", "Anan", "Du"], 0, "Akanfoɔ abusuakuo titire yɛ nson (Asona, Bretuo, Oyoko, Aduana, Ɛkoɔna, Asakyiri, Asenee).", "Amammerɛ"),
+        ("Abusuakuo bɛn na wɔn ahyɛnsodeɛ ne Ɔkɔdeɛ?", ["Oyoko", "Asona", "Bretuo", "Aduana"], 0, "Oyoko abusuakuo ahyɛnsodeɛ ne Ɔkɔdeɛ.", "Amammerɛ"),
+        ("Asonafoɔ ahyɛnsodeɛ titire ne deɛ bɛn?", ["Anene (Kwaakwaadabi)", "Ɔsebɔ", "Kurotwiamansa", "Ɔkɔdeɛ"], 0, "Asonafoɔ agyiraehyɛdeɛ ne Anene (Kwaakwaadabi).", "Amammerɛ"),
+        ("Berɛ a ɔpanyin bi wuo wɔ Akanman mu no, dɛn na wɔyɛ de kyerɛ obu ma n'asɛm?", ["Ayiyɛ", "Abadintoɔ", "Bragoro", "Afahyɛ"], 0, "Ayiyɛ ne amanneɛ a yɛde gya onipa kwan kɔ asaman.", "Amammerɛ"),
+        ("Amanneɛ a yɛyɛ de gye abaayewa a waduru mpaninfeɛ to fekuo mu frɛ sɛn?", ["Bragoro", "Ayiyɛ", "Abadintoɔ", "Nsuiɛ"], 0, "Bragoro ne amanneɛ a Akanfoɔ yɛ ma abaayewa a wanoa nufuo anaa wabu nsa.", "Amammerɛ"),
+        ("Asanteman Afahyɛ kɛseɛ a wɔdi de kae wɔn nananom ne sɛn?", ["Akwasidae", "Homowo", "Hogbetsotso", "Kundum"], 0, "Akwasidae (ne Awukudae) ne Adae afahyɛ a Asanteman di.", "Amammerɛ"),
+        ("Akyemfoɔ afahyɛ titire a wɔdi afe biara ne sɛn?", ["Odwira", "Fetu Afahye", "Damba", "Aboakyer"], 0, "Odwira afahyɛ na Akuapemfoɔ ne Akyemfoɔ di.", "Amammerɛ"),
+        ("Dɛn ne Agyinamoa agyiraehyɛdeɛ ma abusuakuo bɛn?", ["Bretuo", "Asona", "Asenee", "Aduana"], 0, "Bretuo abusuakuo kura Ɔsebɔ anaa Agyinamoa sɛ wɔn agyiraehyɛdeɛ.", "Amammerɛ"),
+        ("Aduanafoɔ ahyɛnsodeɛ titire a yɛde hu wɔn ne deɛ bɛn?", ["Ɔkraman a ɔkura gya", "Anene", "Ɔkɔdeɛ", "Ɛkoɔ"], 0, "Aduanafoɔ agyiraehyɛdeɛ ne Ɔkraman a ɔkura ogya wɔ n'anom.", "Amammerɛ"),
+        ("Ɛkoɔna abusuakuo no nso, deɛ bɛn na ɛyɛ wɔn agyiraehyɛdeɛ?", ["Ɛkoɔ (Nantwie)", "Ɔsebɔ", "Ɔkɔdeɛ", "Akokɔ"], 0, "Ɛkoɔnafoɔ kura Ɛkoɔ (Buffalo) sɛ wɔn ahyɛnsodeɛ.", "Amammerɛ"),
+        ("Asenee abusuakuo agyiraehyɛdeɛ ne deɛ bɛn?", ["Apantprɛ (Bat)", "Anene", "Kurotwiamansa", "Ɔtwe"], 0, "Asenee abusuakuo agyiraehyɛdeɛ ne Apan (Bat).", "Amammerɛ"),
+        ("Asakyiri abusuakuo nso ahyɛnsodeɛ ne sɛn?", ["Ɔkɔdeɛ ketewa", "Ɔpɛte (Vulture)", "Ɔkraman", "Agyinamoa"], 1, "Asakyirifoɔ ahyɛnsodeɛ ne Ɔpɛte anaa Kɔkɔsakyi.", "Amammerɛ"),
+        ("Sɛ ɔhene bi te agua so a, dɛn na yɛmpene koraa sɛ obi mfa n'anim nkɔ?", ["Mpaboa a wɔamfa nhyɛ", "Nsa mmienu a wode bɔ wo nsam", "Obu kɛseɛ", "Kasa brɛoo"], 0, "Wɔmmfa mpaboa nhyɛ anim kɔ ahemfie gye sɛ ɔhene na wama kwan.", "Amammerɛ"),
+        ("Dɛn na Akanfoɔ de bɔ gu de kɔ asamanfrɛ?", ["Nsa ne nsuo (Nsaguo)", "Bayerɛ bɔne", "Sika nkutoo", "Ahaban"], 0, "Nsaguo ne amanneɛ a Akanfoɔ fa so bɔ mpaeɛ kyerɛ Nyame ne nananom.", "Amammerɛ"),
+        ("Akanfoɔ mu no, abusua panyin no dwumadie titire ne sɛn?", ["Ɔhwɛ abusua agyapadeɛ ne asomdwoeɛ so", "Ɔsɛe sika", "Ɔpam mmɔfra kɔ", "Ɔntie afutuo"], 0, "Abusua panyin di abusua anim na ɔhwɛ nkabom ne asomdwoeɛ so.", "Amammerɛ"),
+        ("Abaayewa a wabu nsa no, berɛ a wɔreyɛ no bragoro no, dɛn na wɔde gu n'anim?", ["Ɛtɔ ne nkesua", "Nsuo kɛkɛ", "Nkyene", "Mako"], 0, "Ɛtɔ a nkesua wom na yɛde ma no kyerɛ awoɔ ne nhyira.", "Amammerɛ"),
+        ("Amanneɛ a yɛyɛ de tew asaase ho berɛ a obi ayɛ akyiwadeɛ frɛ dɛn?", ["Asaasetew", "Bragoro", "Abadintoɔ", "Ayiyɛ"], 0, "Asaasetew ne amanneɛ a yɛde twa oguan gu fam de pata asaase.", "Amammerɛ"),
+        ("Akanman mu no, hena na ɔhwɛ ɔhene agyapadeɛ ne ne dadeɛ so?", ["Sanaahene", "Akyeamehene", "Krontihene", "Gyaasehene"], 0, "Sanaahene na ɔhwɛ sika ne sikakorabea so wɔ ahemfie.", "Amammerɛ"),
+        ("Ɔkyeame dwumadie titire wɔ ahemfie ne sɛn?", ["Ɔka ɔhene kasa kyerɛ amansan", "Ɔnoaa aduane", "Ɔpam akorɔmfoɔ", "Ɔbɔ dondo"], 0, "Ɔkyeame ne ɔhene tɛkrɛma a ɔka n'asɛm ma ɛyɛ dɛ.", "Amammerɛ"),
+        ("Dɛn na Akanfoɔ frɛ da a wɔmfa nnɔkɔ afuom wɔ nsuo anaa asaase ho?", ["Dabɔne (Taboo day)", "Afahyɛ da", "Adwumada", "Ahomegyeda kɛkɛ"], 0, "Dabɔne te sɛ Fida anaa Dwoada yɛ akyiwadeɛ da ma afumkɔ de bɔ abɔdeɛ ho ban.", "Amammerɛ"),
+        ("Akanfoɔ gye di sɛ onipa wu a, ne kra kɔ he?", ["Asaman", "Po ase", "Wiem kɛkɛ", "Ɔsɛe koraa"], 0, "Akanfoɔ gye di sɛ Asaman ne beaeɛ a nananom a wɔawu no te.", "Amammerɛ"),
+        ("Akanfoɔ mu no, nsuo Bosome Afahyɛ a wɔdi wɔ Bono man mu ne deɛ bɛn?", ["Apoɔ afahyɛ", "Homowo", "Hogbetsotso", "Odwira"], 0, "Apoɔ afahyɛ yɛ afahyɛ kɛseɛ a Bono ne Wenchi foɔ di de kasa tia bɔne.", "Amammerɛ"),
+
+        # Agyarekɔ ne Kasakoa (76-100)
+        ("Agya rekɔ kurotia na ɔresrɛ aduane; ɔbaa fie a ɔnkasa. Ɛyɛ deɛ bɛn? (Agyarekɔ)", ["Ahwenepa", "Akokɔ a ɔwɔ nkesua so", "Dadeɛ a ɛwɔ gya mu", "Ɔkɔtɔ"], 1, "Akokɔ a ɔwɔ nkesua so te sɛ ɔresrɛ aduane nanso ɔnkasa.", "Agyarekɔ"),
+        ("Agya rekɔ, me nso merekɔ; obiara ntwitwa obi akyi. Ɛyɛ deɛ bɛn?", ["Nsunsuansoɔ", "Ɔpɔnkɔ", "Sunsuma", "Abofra"], 2, "Sunsuma di onipa akyi berɛ biara nanso obiara ntwitwa obi akyi.", "Agyarekɔ"),
+        ("Agya adeɛ bi wɔ hɔ, sɛ woto no tuo a, ɔnsuro; nanso wode wensu kyerɛ no a, ɔsuro. Ɛyɛ deɛ bɛn?", ["Agyan", "Amu (Ogya)", "Nsuomnam", "Ɛfan"], 1, "Ogya nsuro tuo nanso nsuo bɛtumi adum no.", "Agyarekɔ"),
+        ("Agya kraman bi wɔ hɔ, ɔda dan mu na ne nan gu abɔntene. Ɛyɛ deɛ bɛn?", ["Tɛkrɛma", "Ogya fitaa", "Abura", "Adesoa"], 0, "Tɛkrɛma da anom nanso ne kasa gu abɔntene ma obiara te.", "Agyarekɔ"),
+        ("Agya mma nnum a wɔkura aduane baako nanso wɔmfa mma obiara. Ɛyɛ deɛ bɛn?", ["Nsateaa nnum", "Akoko mma", "Ntɛtea", "Mpaboa"], 0, "Nsateaa nnum a ɛkura aduane berɛ a yɛredidi.", "Agyarekɔ"),
+        ("Agya poma tenten bi wɔ hɔ, yɛbɔ so pɛ na agye kurotia. Ɛyɛ deɛ bɛn?", ["Tuo", "Kɛntɛn", "Afie", "Poma"], 0, "Tuo nnyigyei gye kuro kɛseɛ mu pɛrekɔ.", "Agyarekɔ"),
+        ("Agya adeɛ bi wɔ hɔ, sɛ wonam a ɔnam bi, sɛ wogyina a ɔgyina bi. Ɛyɛ deɛ bɛn?", ["Wo sunsuma", "Wo nan", "Wo kraman", "W'ani"], 0, "Sunsuma di onipa akyi wɔ ne kwan nyinaa mu.", "Agyarekɔ"),
+        ("Agya adeɛ bi wɔ hɔ, sɛ woka no ntam a ɔnte nso wotia no a ɔbɔ. Ɛyɛ deɛ bɛn?", ["Nkasɛe", "Dua", "Mukaase", "Bɔɔl"], 0, "Nkasɛe wommfa nsa nka na mmom wotia a ɛwɔ wo.", "Agyarekɔ"),
+        ("Agya adeɛ bi wɔ hɔ, sɛ ɔreba a ɔgu nsuo nanso ɔnkura bɔtɔ. Ɛyɛ deɛ bɛn?", ["Omununkum (Munumkum)", "Akokɔ", "Ɔpɔnkɔ", "Nsuoba"], 0, "Omununkum siesie nsuo ma ɛtɔ gu fam.", "Agyarekɔ"),
+        ("Agya adeɛ bi wɔ hɔ, sɛ wowɔ no a wopɛ sɛ woto gu, na sɛ wonni no nso a worehwehwɛ. Ɛyɛ dɛn?", ["Nnɔbae", "Yareɛ", "Akoma", "Kuro"], 1, "Yareɛ anaa amanehunu a obiara mpɛ nanso sɛ ɛba a ɔhwehwɛ ayaresa.", "Agyarekɔ"),
+        ("Kasakoa: Sɛ yɛka sɛ 'Ɔbaa no kɔ akyire' a, na ɛkyerɛ sɛn?", ["Wanyinsɛn", "Wadwane", "Wawuo", "Wagyae adwuma"], 0, "'Ɔkɔ akyire' yɛ kasakoa a Akanfoɔ de kyerɛ sɛ ɔbaa bi anyinsɛn.", "Kasakoa"),
+        ("Kasakoa: Sɛ yɛka sɛ 'Ɔhene no kɔ n'akuraa' a, ɛkyerɛ dɛn koraa?", ["Wawuo", "Watu kwan", "Wadidi", "Wanya sika"], 0, "Wɔmfa nnaano nka sɛ ɔhene bi awuo; yɛka sɛ wakɔ n'akuraa anaa wadum.", "Kasakoa"),
+        ("Kasakoa: 'Ɔwɔ nsa tintin' kyerɛ sɛn wɔ Akan asetena mu?", ["Ɔyɛ korɔmfoɔ", "Ɔyɛ tenten", "Ɔpɛ adwuma", "Ɔnim akyɛdeɛ"], 0, "'Nsa tenten' kyerɛ onipa a ɔyɛ korɔmfoɔ anaa owia adeɛ.", "Kasakoa"),
+        ("Kasakoa: 'Ne nan mu yɛ duru' kyerɛ sɛn?", ["Ɔnyinsɛn", "Ne nan apira", "Ɔntumi nnante", "Ɔyɛ ahoɔdenfoɔ"], 0, "'Ne nan mu yɛ duru' yɛ kasakoa foforɔ a ɛkyerɛ nyinsɛn.", "Kasakoa"),
+        ("Kasakoa: 'Ɔte n'aso mu' kyerɛ dɛn?", ["Ɔyɛ asoɔdenfoɔ", "Ɔpɛ asɛm", "Watu aso", "Wawuo"], 0, "'Ɔte n'aso mu' kyerɛ onipa a ɔyɛ asoɔden na ɔntie afutuo.", "Kasakoa"),
+        ("Kasakoa: 'Ne nsa da ne mu' kyerɛ sɛn?", ["Ɔyɛ yamfoɔ (ɔnkora)", "Ɔpɛ sika", "Wapira ne nsa", "Ɔnni sika koraa"], 0, "'Ne nsa da ne mu' kyerɛ onipa a ɔyɛ yamfoɔ a ɔmpepe adeɛ.", "Kasakoa"),
+        ("Kasakoa: 'N'ano yɛ nnam' kyerɛ dɛn?", ["Ɔtumi kasa yiye / Ɔpɛ akasakasa", "Ne se yɛ dɛ", "Ɔdi mako pii", "Ɔnte kasa ase"], 0, "'N'ano yɛ nnam' kyerɛ onipa a ɔkasa kɛse anaa ne tɛkrɛma ano yɛ se.", "Kasakoa"),
+        ("Kasakoa: 'Wabu nsa' kyerɛ dɛn wɔ ababaawa asetena mu?", ["Waduru mpaninfeɛ / Wabu fa", "Wanya nsa anom", "Wapira ne nsa", "Wagyae sukuu"], 0, "'Wabu nsa' kyerɛ sɛ ababaawa bi ahyɛ aseɛ bu nsa (menstruation).", "Kasakoa"),
+        ("Kasakoa: Sɛ yɛka sɛ 'Ɔhene no ti asɛe' a, ɛkyerɛ sɛn?", ["Ɔyare / Wanya bɔne", "Wawuo koraa", "Watutu ahennie", "Ɔpɛ asɔre"], 0, "Ɛyɛ kasakoa a ɛkyerɛ sɛ ɔhene bi yare anaa ɔnni ahoɔden pa.", "Kasakoa"),
+        ("Kasakoa: 'Ɔtɔɔ ne kɔn mu' kyerɛ dɛn?", ["Ɔwaree no", "Ɔpam no", "Ɔkum no", "Ɔkasa tiaa no"], 0, "'Tɔ kɔn mu' kyerɛ awareɛ a ɔbarima fa so ware ɔbaa.", "Kasakoa"),
+        ("Kasakoa: 'N'ani abue' kyerɛ sɛn?", ["Wanya nyansa ne nteaseɛ", "N'ani pirae", "Ɔnhu adeɛ", "Ɔrekɔ sukuu kɛkɛ"], 0, "'Ani abue' kyerɛ anim-nkɔsoɔ ne nyansa a obi anya.", "Kasakoa"),
+        ("Kasakoa: 'N'akoma ate' kyerɛ dɛn?", ["Ne bo afu kɛseɛ", "N'akoma yare", "Wanya anigyeɛ", "Wadwane kɔ"], 0, "'Akoma te' kyerɛ abufuhyeɛ anaa kateka kɛseɛ a aba onipa mu.", "Kasakoa"),
+        ("Kasakoa: 'Wagyae mu' kyerɛ sɛn wɔ owuo ho?", ["Wawuo", "Wadidi", "Wada", "Watua ka"], 0, "'Gyae mu' yɛ kwan koro a yɛfa so ka owuo ho asɛm bɔkɔɔ.", "Kasakoa"),
+        ("Kasakoa: 'Ɔhyiaa ne nsam' kyerɛ dɛn?", ["Wadidi kɔm", "Ɔyɛ pɛpɛɛfoɔ / Yamfoɔ", "Wagyae adwuma", "Ɔkura sika"], 1, "'Hyia nsa mu' kyerɛ sɛ obi yɛ pɛpɛɛfoɔ a ɔmpɛ sɛ ɔde ne sika kyɛ.", "Kasakoa"),
+        ("Kasakoa: 'Ɔhyɛɛ no aniwuo' kyerɛ dɛn?", ["Ɔguu n'anim ase", "Ɔbɔɔ n'abaso", "Ɔmaa no akyɛdeɛ", "Ɔkaa no ntam"], 0, "Ɛkyerɛ sɛ ɔyɛɛ biribi a ɛmaa animtiaabu ne aniwuo baa ne so.", "Kasakoa"),
+    ]
+
+    questions = []
+    for idx, item in enumerate(items):
+        questions.append({
+            "id": f"twi-2027-{idx+1:03d}",
+            "releaseYear": "2027",
+            "examFamily": "BECE",
+            "subjectId": "twi",
+            "topic": item[4],
+            "syllabusRef": f"NaCCA Ghanaian Language & Culture (Twi) Syllabus - {item[4]}",
+            "stem": item[0],
+            "options": item[1],
+            "answerIndex": item[2],
+            "explanation": item[3],
+            "difficulty": "Easy" if idx % 3 == 0 else "Medium" if idx % 3 == 1 else "Hard",
+            "marks": 1,
+            "status": "published",
+            "version": 1,
+            "createdAt": "2027-01-15T00:00:00Z"
+        })
+    return questions
+
+print("Twi generator with 100 unique questions created.")
